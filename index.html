@@ -460,8 +460,19 @@ function formatDate(dateStr) {
   catch(e) { return ''; }
 }
 
-// AI call
-async function callAI(systemPrompt, userMsg, maxTokens) {
+// AI call (with retry)
+function setLoadingMsg(msg) {
+  ['blog-loading-msg','article-loading-msg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.closest('.phase.active')) el.textContent = msg;
+  });
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function isRetryable(status) { return status === 429 || status === 503 || status === 500; }
+
+async function callAIOnce(systemPrompt, userMsg, maxTokens) {
   const ai = currentAi(), apiKey = getKey(ai);
   if (!apiKey) throw new Error('APIキーが設定されていません。上の設定欄に入力して保存してください。');
   let res;
@@ -471,7 +482,7 @@ async function callAI(systemPrompt, userMsg, maxTokens) {
       headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens||2000,system:systemPrompt,messages:[{role:'user',content:userMsg}]}),
     });
-    if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error('Claude API error: '+(e.error?e.error.message:res.status)); }
+    if (!res.ok) { const e=await res.json().catch(()=>({})); const err=new Error('Claude API error: '+(e.error?e.error.message:res.status)); err.status=res.status; throw err; }
     const d = await res.json();
     return parseJSON(d.content?.[0]?.text || '{}');
   } else if (ai === 'openai') {
@@ -480,7 +491,7 @@ async function callAI(systemPrompt, userMsg, maxTokens) {
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
       body:JSON.stringify({model:'gpt-4o',messages:[{role:'system',content:systemPrompt},{role:'user',content:userMsg}],max_tokens:maxTokens||2000}),
     });
-    if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error('OpenAI API error: '+(e.error?e.error.message:res.status)); }
+    if (!res.ok) { const e=await res.json().catch(()=>({})); const err=new Error('OpenAI API error: '+(e.error?e.error.message:res.status)); err.status=res.status; throw err; }
     const d = await res.json();
     return parseJSON(d.choices?.[0]?.message?.content || '{}');
   } else if (ai === 'gemini') {
@@ -489,10 +500,33 @@ async function callAI(systemPrompt, userMsg, maxTokens) {
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[{text:systemPrompt+'\n\n'+userMsg}]}]}),
     });
-    if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error('Gemini API error: '+(e.error?e.error.message:res.status)); }
+    if (!res.ok) { const e=await res.json().catch(()=>({})); const err=new Error('Gemini API error: '+(e.error?e.error.message:res.status)); err.status=res.status; throw err; }
     const d = await res.json();
     return parseJSON(d.candidates?.[0]?.content?.parts?.[0]?.text || '{}');
   }
+}
+
+async function callAI(systemPrompt, userMsg, maxTokens) {
+  const MAX_RETRIES = 3;
+  const DELAYS = [5000, 15000, 30000]; // 5秒 → 15秒 → 30秒
+  let lastError;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      return await callAIOnce(systemPrompt, userMsg, maxTokens);
+    } catch(e) {
+      lastError = e;
+      if (attempt < MAX_RETRIES && isRetryable(e.status)) {
+        const wait = DELAYS[attempt];
+        const secs = Math.round(wait / 1000);
+        setLoadingMsg('混雑中のため待機しています... ' + secs + '秒後に再試行 (' + (attempt+1) + '/' + MAX_RETRIES + ')');
+        await sleep(wait);
+        setLoadingMsg('再試行しています... (' + (attempt+2) + '/' + (MAX_RETRIES+1) + ')');
+      } else {
+        throw lastError;
+      }
+    }
+  }
+  throw lastError;
 }
 
 function parseJSON(text) {
