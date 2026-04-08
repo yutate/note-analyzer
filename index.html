@@ -9,60 +9,88 @@
   body { min-height: 100vh; background: #0a0a0a; color: #e8e0d5; font-family: Georgia, 'Times New Roman', serif; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes fadein { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  #header { border-bottom: 1px solid #2a2a2a; padding: 48px 40px 32px; position: relative; overflow: hidden; }
+  #header { border-bottom: 1px solid #2a2a2a; padding: 40px 40px 28px; position: relative; overflow: hidden; }
   #header-glow { position: absolute; top: 0; right: 0; width: 400px; height: 100%; background: radial-gradient(ellipse at right, rgba(180,140,80,0.08) 0%, transparent 70%); pointer-events: none; }
   #header-inner { max-width: 900px; margin: 0 auto; }
-  .eyebrow { font-size: 11px; letter-spacing: 4px; color: #555; margin-bottom: 12px; text-transform: uppercase; }
-  h1 { font-size: clamp(24px, 5vw, 44px); font-weight: 400; letter-spacing: -1px; line-height: 1.1; }
-  .subtitle { color: #555; font-size: 14px; margin-top: 12px; }
+  .eyebrow { font-size: 11px; letter-spacing: 4px; color: #555; margin-bottom: 10px; text-transform: uppercase; }
+  h1 { font-size: clamp(22px, 4vw, 40px); font-weight: 400; letter-spacing: -1px; line-height: 1.1; }
+  .subtitle { color: #555; font-size: 13px; margin-top: 10px; }
   #main { max-width: 900px; margin: 0 auto; padding: 40px; }
   .phase { display: none; animation: fadein 0.3s ease; }
   .phase.active { display: block; }
-  .input-section { margin-bottom: 40px; }
-  .input-label { font-size: 11px; letter-spacing: 3px; color: #444; margin-bottom: 16px; text-transform: uppercase; }
+
+  /* API設定パネル */
+  #api-panel { border: 1px solid #2a2a2a; padding: 28px 32px; margin-bottom: 36px; background: rgba(255,255,255,0.01); }
+  #api-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  #api-panel-title { font-size: 11px; letter-spacing: 3px; color: #444; text-transform: uppercase; }
+  #api-saved-badge { font-size: 11px; color: #b48c50; display: none; }
+  .api-row { display: flex; gap: 12px; align-items: center; }
+  #ai-select { background: #111; border: 1px solid #2a2a2a; color: #888; padding: 10px 14px; font-size: 13px; font-family: Georgia, serif; outline: none; cursor: pointer; flex-shrink: 0; }
+  #ai-select:focus { border-color: #b48c50; }
+  #api-key-input { flex: 1; background: #111; border: 1px solid #2a2a2a; color: #e8e0d5; padding: 10px 14px; font-size: 13px; font-family: monospace; outline: none; transition: border-color 0.2s; }
+  #api-key-input:focus { border-color: #b48c50; }
+  #api-key-input::placeholder { color: #333; }
+  .save-btn { background: transparent; border: 1px solid #444; color: #555; padding: 10px 18px; font-size: 11px; letter-spacing: 2px; cursor: pointer; font-family: inherit; transition: all 0.2s; white-space: nowrap; }
+  .save-btn:hover { border-color: #b48c50; color: #b48c50; }
+  #api-hint { font-size: 12px; color: #333; margin-top: 10px; line-height: 1.6; }
+  #api-hint a { color: #555; }
+
+  /* Input */
+  .input-section { margin-bottom: 36px; }
+  .input-label { font-size: 11px; letter-spacing: 3px; color: #444; margin-bottom: 14px; text-transform: uppercase; }
   .url-row { display: flex; gap: 12px; }
   #url-input { flex: 1; background: #111; border: 1px solid #2a2a2a; color: #e8e0d5; padding: 12px 16px; font-size: 14px; font-family: Georgia, serif; outline: none; transition: border-color 0.2s; }
   #url-input:focus { border-color: #b48c50; }
   #url-input::placeholder { color: #333; }
-  #drop-zone { border: 1px dashed #2a2a2a; padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+  #drop-zone { border: 1px dashed #2a2a2a; padding: 36px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
   #drop-zone:hover, #drop-zone.drag-over { border-color: #b48c50; background: rgba(180,140,80,0.03); }
   #drop-zone p { color: #444; font-size: 14px; margin-bottom: 8px; }
   #drop-zone span { color: #333; font-size: 12px; }
   #file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  #file-name { color: #b48c50; font-size: 13px; margin-top: 12px; display: none; }
-  .divider { display: flex; align-items: center; gap: 16px; margin: 32px 0; color: #333; font-size: 12px; letter-spacing: 2px; }
+  #file-name { color: #b48c50; font-size: 13px; margin-top: 10px; display: none; }
+  .divider { display: flex; align-items: center; gap: 16px; margin: 28px 0; color: #333; font-size: 12px; letter-spacing: 2px; }
   .divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid #1e1e1e; }
-  .btn-gold { background: transparent; border: 1px solid #b48c50; color: #b48c50; padding: 12px 32px; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+  .btn-gold { background: transparent; border: 1px solid #b48c50; color: #b48c50; padding: 12px 28px; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all 0.2s; }
   .btn-gold:hover { background: #b48c50; color: #0a0a0a; }
   .btn-gold:disabled { border-color: #2a2a2a; color: #333; cursor: default; background: transparent; }
   .btn { background: transparent; border: 1px solid #444; color: #444; padding: 10px 24px; font-size: 12px; letter-spacing: 2px; cursor: pointer; font-family: inherit; }
   .btn-ghost { background: transparent; border: 1px solid #2a2a2a; color: #444; padding: 10px 28px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; font-family: inherit; }
+
+  /* Loading */
   #phase-loading { text-align: center; padding: 60px 0; }
   .spinner { width: 40px; height: 40px; border: 1px solid #333; border-top: 1px solid #b48c50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 24px; }
   #loading-msg { color: #555; font-size: 13px; letter-spacing: 2px; }
+
+  /* Error */
   #phase-error { text-align: center; padding: 40px 0; }
   #error-msg { color: #c0392b; font-size: 14px; margin-bottom: 24px; line-height: 1.7; white-space: pre-line; }
+
+  /* Results */
   #analysis-block { border: 1px solid #2a2a2a; padding: 40px; margin-bottom: 48px; position: relative; background: rgba(180,140,80,0.03); }
   #analysis-topline { position: absolute; top: -1px; left: 40px; right: 40px; height: 2px; background: linear-gradient(90deg, #b48c50, transparent); }
+  #analysis-ai-badge { position: absolute; top: 16px; right: 24px; font-size: 10px; letter-spacing: 2px; color: #333; text-transform: uppercase; }
   .analysis-label { font-size: 10px; letter-spacing: 4px; color: #b48c50; margin-bottom: 28px; text-transform: uppercase; }
   .section-label { font-size: 11px; letter-spacing: 3px; color: #444; margin-bottom: 10px; text-transform: uppercase; }
-  #philosophy-text { font-size: 17px; line-height: 1.8; color: #d4c9b8; font-style: italic; }
+  #philosophy-text { font-size: 16px; line-height: 1.9; color: #d4c9b8; font-style: italic; }
   .theme-tag { border: 1px solid #2a2a2a; padding: 6px 14px; font-size: 13px; color: #888; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 28px; }
   .two-col p { font-size: 13px; line-height: 1.8; color: #777; }
   .kw-tag { background: rgba(180,140,80,0.1); color: #b48c50; padding: 4px 10px; font-size: 12px; }
-  #articles-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
+  #articles-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; }
   #articles-label { font-size: 10px; letter-spacing: 4px; color: #444; text-transform: uppercase; }
   #blog-title-display { font-size: 14px; color: #666; }
-  .article-row { display: flex; align-items: baseline; gap: 20px; padding: 16px 0; border-bottom: 1px solid #1a1a1a; text-decoration: none; color: inherit; transition: padding-left 0.2s; }
+  .article-row { display: flex; align-items: baseline; gap: 20px; padding: 14px 0; border-bottom: 1px solid #1a1a1a; text-decoration: none; color: inherit; transition: padding-left 0.2s; }
   .article-row:hover { padding-left: 8px; }
   .article-num { font-size: 11px; color: #333; width: 24px; flex-shrink: 0; }
   .article-title { font-size: 15px; flex: 1; line-height: 1.4; }
   .article-date { font-size: 11px; color: #444; flex-shrink: 0; }
   #reanalyze-wrap { text-align: center; margin-top: 48px; }
+
   @media (max-width: 600px) {
-    #header { padding: 28px 20px 20px; }
+    #header { padding: 24px 20px 20px; }
     #main { padding: 24px 20px; }
+    #api-panel { padding: 20px; }
+    .api-row { flex-direction: column; align-items: stretch; }
     .two-col { grid-template-columns: 1fr; }
     #analysis-block { padding: 24px; }
     .url-row { flex-direction: column; }
@@ -78,9 +106,30 @@
     <p class="subtitle">任意のnoteブログのRSSを読み込み、AIがブログ全体の思想・テーマを分析します</p>
   </div>
 </div>
+
 <div id="main">
   <div id="phase-input" class="phase active">
     <div style="padding: 32px 0;">
+
+      <!-- API設定 -->
+      <div id="api-panel">
+        <div id="api-panel-header">
+          <div id="api-panel-title">AI / API Key 設定</div>
+          <div id="api-saved-badge">✓ 保存済み</div>
+        </div>
+        <div class="api-row">
+          <select id="ai-select" onchange="onAiChange()">
+            <option value="claude">Claude (Anthropic)</option>
+            <option value="openai">GPT-4o (OpenAI)</option>
+            <option value="gemini">Gemini (Google)</option>
+          </select>
+          <input type="password" id="api-key-input" placeholder="APIキーを入力" oninput="onKeyInput()" />
+          <button class="save-btn" onclick="saveKey()">保存</button>
+        </div>
+        <div id="api-hint"></div>
+      </div>
+
+      <!-- URL -->
       <div class="input-section">
         <div class="input-label">RSS URL から取得</div>
         <div class="url-row">
@@ -89,7 +138,10 @@
         </div>
         <p style="color:#333;font-size:12px;margin-top:10px;">例: https://note.com/yutate/rss</p>
       </div>
+
       <div class="divider">OR</div>
+
+      <!-- File -->
       <div class="input-section">
         <div class="input-label">RSSファイル（XML）を読み込む</div>
         <div id="drop-zone">
@@ -102,19 +154,24 @@
           <button id="file-analyze-btn" class="btn-gold" disabled onclick="analyzeFromFile()">このファイルを分析</button>
         </div>
       </div>
+
     </div>
   </div>
+
   <div id="phase-loading" class="phase">
     <div class="spinner"></div>
     <p id="loading-msg">取得しています...</p>
   </div>
+
   <div id="phase-error" class="phase">
     <p id="error-msg"></p>
     <button class="btn" onclick="showPhase('phase-input')">戻る</button>
   </div>
+
   <div id="phase-done" class="phase">
     <div id="analysis-block">
       <div id="analysis-topline"></div>
+      <div id="analysis-ai-badge"></div>
       <div class="analysis-label">AI Analysis</div>
       <div style="margin-bottom:32px;">
         <div class="section-label">Philosophy</div>
@@ -143,24 +200,73 @@
     </div>
   </div>
 </div>
+
 <script>
+const AI_CONFIG = {
+  claude: {
+    label: 'Claude (Anthropic)',
+    placeholder: 'sk-ant-...',
+    hint: '取得先: <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a>',
+  },
+  openai: {
+    label: 'GPT-4o (OpenAI)',
+    placeholder: 'sk-...',
+    hint: '取得先: <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>',
+  },
+  gemini: {
+    label: 'Gemini (Google)',
+    placeholder: 'AIza...',
+    hint: '取得先: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> — 無料枠あり',
+  },
+};
+
 const PROXIES = [
   url => "https://api.allorigins.win/get?url=" + encodeURIComponent(url),
   url => "https://corsproxy.io/?" + encodeURIComponent(url),
   url => "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(url),
 ];
+
 let fileXmlContent = null;
+
+function currentAi() { return document.getElementById('ai-select').value; }
+function getKey(ai) { return localStorage.getItem('api_key_' + (ai || currentAi())) || ''; }
+function saveKey() {
+  const ai = currentAi();
+  const val = document.getElementById('api-key-input').value.trim();
+  if (!val) return;
+  localStorage.setItem('api_key_' + ai, val);
+  const badge = document.getElementById('api-saved-badge');
+  badge.style.display = 'block';
+  badge.textContent = '✓ 保存済み';
+}
+function onKeyInput() {
+  document.getElementById('api-saved-badge').style.display = 'none';
+}
+function onAiChange() {
+  const ai = currentAi();
+  const cfg = AI_CONFIG[ai];
+  document.getElementById('api-key-input').placeholder = cfg.placeholder;
+  document.getElementById('api-hint').innerHTML = cfg.hint;
+  const saved = getKey(ai);
+  document.getElementById('api-key-input').value = saved;
+  const badge = document.getElementById('api-saved-badge');
+  badge.style.display = saved ? 'block' : 'none';
+  badge.textContent = saved ? '✓ 保存済み' : '';
+}
+
+window.addEventListener('load', () => { onAiChange(); });
+
 function showPhase(id) {
   document.querySelectorAll('.phase').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
 const dropZone = document.getElementById('drop-zone');
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
 dropZone.addEventListener('drop', e => {
   e.preventDefault(); dropZone.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file) loadFile(file);
+  const file = e.dataTransfer.files[0]; if (file) loadFile(file);
 });
 function handleFile(e) { const file = e.target.files[0]; if (file) loadFile(file); }
 function loadFile(file) {
@@ -169,12 +275,12 @@ function loadFile(file) {
     fileXmlContent = e.target.result;
     document.getElementById('file-name').textContent = file.name;
     document.getElementById('file-name').style.display = 'block';
-    const btn = document.getElementById('file-analyze-btn');
-    btn.disabled = false;
+    document.getElementById('file-analyze-btn').disabled = false;
   };
   reader.readAsText(file);
 }
 function analyzeFromFile() { if (fileXmlContent) runAnalysis(fileXmlContent); }
+
 async function startFromUrl() {
   const url = document.getElementById('url-input').value.trim();
   if (!url) return;
@@ -188,6 +294,7 @@ async function startFromUrl() {
     showPhase('phase-error');
   }
 }
+
 async function fetchWithProxy(url) {
   let lastError;
   for (const proxyFn of PROXIES) {
@@ -201,11 +308,13 @@ async function fetchWithProxy(url) {
   }
   throw new Error(lastError ? lastError.message : 'unknown');
 }
+
 function stripHtml(html) {
   const div = document.createElement('div');
   div.innerHTML = html;
   return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
 }
+
 function parseRSS(xmlText) {
   const parser = new DOMParser();
   const xml = parser.parseFromString(xmlText, 'text/xml');
@@ -218,26 +327,64 @@ function parseRSS(xmlText) {
   }));
   return { blogTitle, items };
 }
+
 function formatDate(dateStr) {
   try { return new Date(dateStr).toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' }); }
   catch(e) { return ''; }
 }
-async function callClaude(blogTitle, articles) {
-  const summaries = articles.map((a, i) => '【記事' + (i+1) + '】' + a.title + '\n' + (a.description || '').slice(0, 300)).join('\n\n');
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: 'あなたはブログ分析の専門家です。記事群を分析し、JSON形式のみで返してください。マークダウン記法や余分なテキストは不要です。\n\nJSON形式:\n{\n  "philosophy": "このブログ全体を貫く思想・哲学（200字程度）",\n  "themes": ["テーマ1", "テーマ2", "テーマ3", "テーマ4", "テーマ5"],\n  "style": "文体・語り口の特徴（100字程度）",\n  "insight": "このブログが問いかけていること（150字程度）",\n  "keywords": ["キーワード1", "キーワード2", "キーワード3", "キーワード4", "キーワード5", "キーワード6"]\n}',
-      messages: [{ role: 'user', content: 'ブログ名: ' + blogTitle + '\n\n以下の記事群を分析してください:\n\n' + summaries }],
-    }),
-  });
-  const data = await res.json();
-  const text = data.content && data.content[0] ? data.content[0].text : '{}';
+
+const SYSTEM_PROMPT = 'あなたはブログ分析の専門家です。記事群を分析し、JSON形式のみで返してください。マークダウン記法や余分なテキストは不要です。\n\nJSON形式:\n{\n  "philosophy": "このブログ全体を貫く思想・哲学（200字程度）",\n  "themes": ["テーマ1", "テーマ2", "テーマ3", "テーマ4", "テーマ5"],\n  "style": "文体・語り口の特徴（100字程度）",\n  "insight": "このブログが問いかけていること（150字程度）",\n  "keywords": ["キーワード1", "キーワード2", "キーワード3", "キーワード4", "キーワード5", "キーワード6"]\n}';
+
+async function callAI(blogTitle, articles) {
+  const ai = currentAi();
+  const apiKey = getKey(ai);
+  if (!apiKey) throw new Error('APIキーが設定されていません。上の設定欄に入力して保存してください。');
+  const userMsg = 'ブログ名: ' + blogTitle + '\n\n以下の記事群を分析してください:\n\n' +
+    articles.map((a, i) => '【記事' + (i+1) + '】' + a.title + '\n' + (a.description || '').slice(0, 300)).join('\n\n');
+
+  let res;
+  if (ai === 'claude') {
+    res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM_PROMPT, messages: [{ role: 'user', content: userMsg }] }),
+    });
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error('Claude API error: ' + (e.error ? e.error.message : res.status)); }
+    const data = await res.json();
+    return parseJSON(data.content && data.content[0] ? data.content[0].text : '{}');
+
+  } else if (ai === 'openai') {
+    res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({ model: 'gpt-4o', messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: userMsg }], max_tokens: 1000 }),
+    });
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error('OpenAI API error: ' + (e.error ? e.error.message : res.status)); }
+    const data = await res.json();
+    return parseJSON(data.choices && data.choices[0] ? data.choices[0].message.content : '{}');
+
+  } else if (ai === 'gemini') {
+    res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: SYSTEM_PROMPT + '\n\n' + userMsg }] }] }),
+    });
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error('Gemini API error: ' + (e.error ? e.error.message : res.status)); }
+    const data = await res.json();
+    const text = data.candidates && data.candidates[0] ? data.candidates[0].content.parts[0].text : '{}';
+    return parseJSON(text);
+  }
+}
+
+function parseJSON(text) {
   try { return JSON.parse(text.replace(/```json|```/g, '').trim()); } catch(e) { return null; }
 }
+
 async function runAnalysis(xmlText) {
   showPhase('phase-loading');
   document.getElementById('loading-msg').textContent = 'RSSを解析しています...';
@@ -245,7 +392,7 @@ async function runAnalysis(xmlText) {
     const { blogTitle, items } = parseRSS(xmlText);
     if (!items.length) throw new Error('記事が見つかりませんでした。XMLの形式を確認してください。');
     document.getElementById('loading-msg').textContent = 'AIが分析しています... (' + items.length + '記事)';
-    const analysis = await callClaude(blogTitle, items);
+    const analysis = await callAI(blogTitle, items);
     if (!analysis) throw new Error('AI分析に失敗しました');
     renderResults(blogTitle, items, analysis);
   } catch(e) {
@@ -253,7 +400,9 @@ async function runAnalysis(xmlText) {
     showPhase('phase-error');
   }
 }
+
 function renderResults(blogTitle, articles, analysis) {
+  document.getElementById('analysis-ai-badge').textContent = AI_CONFIG[currentAi()].label;
   document.getElementById('philosophy-text').textContent = '\u201c' + analysis.philosophy + '\u201d';
   const tw = document.getElementById('themes-wrap'); tw.innerHTML = '';
   (analysis.themes || []).forEach(t => { const s = document.createElement('span'); s.className = 'theme-tag'; s.textContent = t; tw.appendChild(s); });
